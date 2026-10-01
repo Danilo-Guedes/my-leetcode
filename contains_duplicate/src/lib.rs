@@ -4,17 +4,9 @@ struct Solution;
 
 impl Solution {
     pub fn has_duplicate(nums: Vec<i32>) -> bool {
-        let mut hash = HashSet::new();
+        let mut hash = HashSet::with_capacity(nums.len());
 
-        for num in nums {
-            if hash.contains(&num) {
-                return true;
-            } else {
-                hash.insert(num);
-            }
-        }
-
-        false
+        nums.into_iter().any(|n| !hash.insert(n))
     }
 }
 
