@@ -1,23 +1,20 @@
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 struct Solution;
 
 impl Solution {
     pub fn has_duplicate(nums: Vec<i32>) -> bool {
-        let mut hash = HashMap::new();
+        let mut hash = HashSet::new();
 
         for num in nums {
-            if hash.contains_key(&num) {
-                let found = hash.get_mut(&num).unwrap();
-                *found += 1;
+            if hash.contains(&num) {
+                return true;
             } else {
-                hash.insert(num, 1);
+                hash.insert(num);
             }
         }
 
-        let mut values = hash.values();
-
-        values.any(|&n| n > 1)
+        false
     }
 }
 
