@@ -1,18 +1,32 @@
 use std::collections::HashMap;
 
-#[allow(dead_code)]
+pub struct Solution;
 
-struct Solution;
+const MAX_LETTERS_SIZE: usize = 26;
 
 impl Solution {
-    pub fn is_anagram(s: String, t: String) -> bool {
-        let mut s_chars: Vec<char> = s.chars().collect();
-        s_chars.sort();
+    pub fn is_anagram(first: String, second: String) -> bool {
+        if first.len() != second.len() {
+            return false;
+        }
+        let mut first_hash = HashMap::with_capacity(MAX_LETTERS_SIZE);
+        let mut second_hash = HashMap::with_capacity(MAX_LETTERS_SIZE);
 
-        let mut t_chars: Vec<char> = t.chars().collect();
-        t_chars.sort();
+        for ch in first.chars() {
+            first_hash
+                .entry(ch)
+                .and_modify(|counter| *counter += 1)
+                .or_insert(1);
+        }
 
-        s_chars == t_chars
+        for ch in second.chars() {
+            second_hash
+                .entry(ch)
+                .and_modify(|counter| *counter += 1)
+                .or_insert(1);
+        }
+
+        first_hash == second_hash
     }
 }
 
