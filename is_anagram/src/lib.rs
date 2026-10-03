@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 pub struct Solution;
 
 const MAX_LETTERS_SIZE: usize = 26;
@@ -9,24 +7,14 @@ impl Solution {
         if first.len() != second.len() {
             return false;
         }
-        let mut first_hash = HashMap::with_capacity(MAX_LETTERS_SIZE);
-        let mut second_hash = HashMap::with_capacity(MAX_LETTERS_SIZE);
+        let mut counts = [0i32; MAX_LETTERS_SIZE]; // on the stack, no heap allocation
 
-        for ch in first.chars() {
-            first_hash
-                .entry(ch)
-                .and_modify(|counter| *counter += 1)
-                .or_insert(1);
+        for (a, b) in first.bytes().zip(second.bytes()) {
+            counts[(a - b'a') as usize] += 1;
+            counts[(b - b'a') as usize] -= 1;
         }
 
-        for ch in second.chars() {
-            second_hash
-                .entry(ch)
-                .and_modify(|counter| *counter += 1)
-                .or_insert(1);
-        }
-
-        first_hash == second_hash
+        !counts.iter().any(|n| *n != 0)
     }
 }
 
