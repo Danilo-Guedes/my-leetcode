@@ -15,22 +15,15 @@ impl Solution {
         // -10,000,000 <= nums[i] <= 10,000,000
         // -10,000,000 <= target <= 10,000,000
 
-        let mut result: Vec<i32> = vec![];
-
-        for i in 0..nums.len() {
-            for j in 0..nums.len() {
-                if j == i {
-                    continue;
-                }
-
-                if (nums[i] + nums[j]) == target && i < j {
-                    result.push(i as i32);
-                    result.push(j as i32);
+        for i in 0..nums.len().saturating_sub(1) {
+            for j in (i + 1)..nums.len() {
+                if nums[i] + nums[j] == target {
+                    return vec![i as i32, j as i32];
                 }
             }
         }
 
-        result
+        vec![]
     }
 }
 #[cfg(test)]
