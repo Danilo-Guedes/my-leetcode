@@ -12,15 +12,9 @@ impl Solution {
 
             let key = String::from_iter::<Vec<_>>(ordered_chars.iter().collect());
 
-            if hash.contains_key(&key) {
-                //found
-
-                let found_value = hash.get_mut(&key).unwrap();
-
-                found_value.push(orig_val);
+            if let Some(group) = hash.get_mut(&key) {
+                group.push(orig_val);
             } else {
-                // didn' find, add it
-
                 hash.insert(key, vec![orig_val]);
             }
         }
