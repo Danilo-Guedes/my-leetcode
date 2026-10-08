@@ -61,7 +61,10 @@ mod tests {
 
         let mut result = Solution::top_k_frequent(nums, k);
 
-        assert_eq!(result.sort(), expected.sort());
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
     }
 
     #[test]
@@ -74,6 +77,9 @@ mod tests {
 
         let mut result = Solution::top_k_frequent(nums, k);
 
-        assert_eq!(result.sort(), expected.sort());
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
     }
 }
