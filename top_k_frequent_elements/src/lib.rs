@@ -104,6 +104,29 @@ impl Solution {
 
         bheap.into_iter().map(|Reverse((_, val))| val).collect()
     }
+
+    pub fn top_k_frequent_bucket(nums: Vec<i32>, k: i32) -> Vec<i32> {
+        let mut hash: HashMap<i32, i32> = HashMap::with_capacity(2_000);
+
+        let nums_len = nums.len();
+
+        for num in nums {
+            hash.entry(num).and_modify(|n| *n += 1).or_insert(1);
+        }
+
+        let mut bucket: Vec<Vec<i32>> = vec![Vec::new(); nums_len + 1];
+
+        for (key, count) in hash.iter() {
+            bucket[*count as usize].push(*key);
+        }
+
+        bucket
+            .into_iter()
+            .rev()
+            .flatten()
+            .take(k as usize)
+            .collect()
+    }
 }
 #[cfg(test)]
 mod tests {
@@ -142,6 +165,38 @@ mod tests {
     }
 
     #[test]
+    fn it_works_with_tied_counts_naive() {
+        let nums = vec![1, 1, 2, 2, 3];
+
+        let k = 2;
+
+        let mut expected = vec![1, 2];
+
+        let mut result = Solution::top_k_frequent_naive(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn it_works_with_negative_numbers_naive() {
+        let nums = vec![-1, -1, -1, 2, 2, -3, 4];
+
+        let k = 2;
+
+        let mut expected = vec![-1, 2];
+
+        let mut result = Solution::top_k_frequent_naive(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
     fn it_works_example_one_bheap() {
         let nums = vec![1, 2, 2, 3, 3, 3];
 
@@ -166,6 +221,102 @@ mod tests {
         let mut expected = vec![7];
 
         let mut result = Solution::top_k_frequent_bheap(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn it_works_with_tied_counts_bheap() {
+        let nums = vec![1, 1, 2, 2, 3];
+
+        let k = 2;
+
+        let mut expected = vec![1, 2];
+
+        let mut result = Solution::top_k_frequent_bheap(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn it_works_with_negative_numbers_bheap() {
+        let nums = vec![-1, -1, -1, 2, 2, -3, 4];
+
+        let k = 2;
+
+        let mut expected = vec![-1, 2];
+
+        let mut result = Solution::top_k_frequent_bheap(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn it_works_example_one_bucket() {
+        let nums = vec![1, 2, 2, 3, 3, 3];
+
+        let k = 2;
+
+        let mut expected = vec![2, 3];
+
+        let mut result = Solution::top_k_frequent_bucket(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn it_works_example_two_bucket() {
+        let nums = vec![7, 7];
+
+        let k = 1;
+
+        let mut expected = vec![7];
+
+        let mut result = Solution::top_k_frequent_bucket(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn it_works_with_tied_counts_bucket() {
+        let nums = vec![1, 1, 2, 2, 3];
+
+        let k = 2;
+
+        let mut expected = vec![1, 2];
+
+        let mut result = Solution::top_k_frequent_bucket(nums, k);
+
+        result.sort();
+        expected.sort();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn it_works_with_negative_numbers_bucket() {
+        let nums = vec![-1, -1, -1, 2, 2, -3, 4];
+
+        let k = 2;
+
+        let mut expected = vec![-1, 2];
+
+        let mut result = Solution::top_k_frequent_bucket(nums, k);
 
         result.sort();
         expected.sort();
