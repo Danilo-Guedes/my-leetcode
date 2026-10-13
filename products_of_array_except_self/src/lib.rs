@@ -34,13 +34,11 @@ impl Solution {
             after_column[idx] = after_column[idx + 1] * nums[idx + 1];
         }
 
-        let mut result: Vec<i32> = Vec::new();
-
-        for (bef, aft) in before_column.iter().zip(after_column) {
-            result.push(bef * aft);
-        }
-
-        result
+        before_column
+            .iter()
+            .zip(after_column)
+            .map(|(bef, aft)| bef * aft)
+            .collect()
     }
 }
 
