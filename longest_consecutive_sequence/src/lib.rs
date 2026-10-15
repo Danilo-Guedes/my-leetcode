@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 pub struct Solution;
 
 impl Solution {
@@ -27,6 +29,36 @@ impl Solution {
 
         if acc > longest_run {
             longest_run = acc;
+        }
+
+        longest_run
+    }
+
+    pub fn longest_consecutive_hashset_version(nums: Vec<i32>) -> i32 {
+        if nums.len() == 0 {
+            return 0;
+        }
+
+        let hash: HashSet<i32> = nums.into_iter().collect();
+
+        let mut longest_run = 0;
+
+        for &num in &hash {
+            if hash.contains(&(num - 1)) {
+                continue;
+            }
+
+            let mut acc = 1;
+            let mut current = num;
+
+            while hash.contains(&(current + 1)) {
+                acc += 1;
+                current += 1;
+            }
+
+            if acc > longest_run {
+                longest_run = acc;
+            }
         }
 
         longest_run
@@ -75,6 +107,50 @@ mod tests {
     fn it_works_sixth_example_sorting_version() {
         let input = vec![];
         let result = Solution::longest_consecutive_sorting_version(input);
+        assert_eq!(result, 0);
+    }
+
+    //HASHSET VERSION
+
+    #[test]
+    fn it_works_first_example_hashset_version() {
+        let input = vec![2, 20, 4, 10, 3, 4, 5];
+        let result = Solution::longest_consecutive_hashset_version(input);
+        assert_eq!(result, 4);
+    }
+
+    #[test]
+    fn it_works_second_example_hashset_version() {
+        let input = vec![0, 3, 2, 5, 4, 6, 1, 1];
+        let result = Solution::longest_consecutive_hashset_version(input);
+        assert_eq!(result, 7);
+    }
+
+    #[test]
+    fn it_works_third_example_hashset_version() {
+        let input = vec![1, 2, 10, 11, 12];
+        let result = Solution::longest_consecutive_hashset_version(input);
+        assert_eq!(result, 3);
+    }
+
+    #[test]
+    fn it_works_fourth_example_hashset_version() {
+        let input = vec![-3, -1, -2, 5];
+        let result = Solution::longest_consecutive_hashset_version(input);
+        assert_eq!(result, 3);
+    }
+
+    #[test]
+    fn it_works_fifth_example_hashset_version() {
+        let input = vec![-1, 0, 1];
+        let result = Solution::longest_consecutive_hashset_version(input);
+        assert_eq!(result, 3);
+    }
+
+    #[test]
+    fn it_works_sixth_example_hashset_version() {
+        let input = vec![];
+        let result = Solution::longest_consecutive_hashset_version(input);
         assert_eq!(result, 0);
     }
 }
