@@ -6,7 +6,7 @@ impl Solution {
     pub fn max_area(heights: Vec<i32>) -> i32 {
         // water = min(height_left, height_right) * (right_index - left_index)
 
-        let mut i = 0 as usize;
+        let mut i = 0;
         let mut j = (heights.len() - 1) as usize;
         let mut final_water_volume = 0;
 
@@ -21,13 +21,7 @@ impl Solution {
 
             if left_height < right_height {
                 i += 1;
-            }
-
-            if right_height < left_height {
-                j -= 1;
-            }
-
-            if left_height == right_height {
+            } else {
                 j -= 1;
             }
         }
