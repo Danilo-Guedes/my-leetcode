@@ -29,6 +29,39 @@ impl Solution {
 
         accum
     }
+
+    pub fn trap(height: Vec<i32>) -> i32 {
+        if height.len() < 3 {
+            return 0;
+        }
+
+        let mut left_most_taller = vec![0; height.len()];
+        let mut right_most_taller = vec![0; height.len()];
+
+        left_most_taller[0] = height[0];
+        for i in 1..height.len() {
+            left_most_taller[i] = max(height[i], left_most_taller[i - 1]);
+        }
+
+        right_most_taller[height.len() - 1] = height[height.len() - 1];
+
+        for i in (0..height.len() - 1).rev() {
+            right_most_taller[i] = max(height[i], right_most_taller[i + 1]);
+        }
+
+        let mut accum = 0;
+
+        for idx in 1..height.len() - 1 {
+            let water_vol = max(
+                min(left_most_taller[idx], right_most_taller[idx]) - height[idx],
+                0,
+            );
+
+            accum += water_vol;
+        }
+
+        accum
+    }
 }
 
 #[cfg(test)]
@@ -50,5 +83,22 @@ mod tests {
     #[test]
     fn staircase_holds_nothing_naive_loops() {
         assert_eq!(Solution::trap_naive_loops(vec![0, 1, 2, 3]), 0);
+    }
+
+    #[test]
+    fn example_one() {
+        let input = vec![0, 2, 0, 3, 1, 0, 1, 3, 2, 1];
+        let result = Solution::trap(input);
+        assert_eq!(result, 9);
+    }
+
+    #[test]
+    fn tall_edges() {
+        assert_eq!(Solution::trap(vec![3, 0, 2, 0, 4]), 7);
+    }
+
+    #[test]
+    fn staircase_holds_nothing() {
+        assert_eq!(Solution::trap(vec![0, 1, 2, 3]), 0);
     }
 }
