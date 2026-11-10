@@ -12,10 +12,10 @@ impl Solution {
     pub fn check_inclusion(s1: String, s2: String) -> bool {
         let s2_chars: Vec<char> = s2.chars().collect();
 
-        let mut s1_hashmap: HashMap<char, i32> = HashMap::new();
+        let mut target_hashmap: HashMap<char, i32> = HashMap::new();
 
         for letter in s1.chars() {
-            *s1_hashmap.entry(letter).or_insert(0) += 1;
+            *target_hashmap.entry(letter).or_insert(0) += 1;
         }
 
         let mut s2_hashmap: HashMap<char, i32> = HashMap::new();
@@ -38,7 +38,7 @@ impl Solution {
                 left += 1
             }
 
-            if s1_hashmap == s2_hashmap {
+            if target_hashmap == s2_hashmap {
                 return true;
             }
         }
